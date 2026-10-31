@@ -1,0 +1,49 @@
+# Unity generated folders 
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+
+# Visual Studio / IDE files 
+.vs/
+.idea/
+*.csproj
+*.unityproj
+*.sln
+*.slnx
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+crashlytics-build.properties
+sysinfo.txt
+
+#  Build outputs 
+*.apk
+*.aab
+*.unitypackage
+*.app
+
+#  OS and misc 
+.DS_Store
+Thumbs.db
+*.tmp
+*.log
+
+# Secrets 
+/Assets/Config/ApiConfig.asset
+/Assets/Config/ApiConfig.asset.meta
