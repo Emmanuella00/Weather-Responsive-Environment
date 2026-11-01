@@ -13073,6 +13073,7 @@ GameObject:
   - component: {fileID: 1232562254}
   - component: {fileID: 1232562253}
   - component: {fileID: 1232562257}
+  - component: {fileID: 1232562258}
   m_Layer: 5
   m_Name: UICanvas
   m_TagString: Untagged
@@ -13183,6 +13184,23 @@ MonoBehaviour:
   statusText: {fileID: 1060665871}
   spinner: {fileID: 1985288947}
   spinDegreesPerSecond: 360
+--- !u!114 &1232562258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1232562252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d007c4c20543ee3448385d30b0a4756d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UiThemeController
+  service: {fileID: 927478031}
+  solidTargets:
+  - {fileID: 937271607}
+  panelTargets:
+  - {fileID: 524475042}
 --- !u!1 &1278233513
 GameObject:
   m_ObjectHideFlags: 0
