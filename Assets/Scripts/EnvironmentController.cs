@@ -6,7 +6,8 @@ using UnityEngine.Rendering;
 /// Turns weather data into the 3D scene's appearance. Listens to WeatherService.OnWeatherLoaded,
 /// exactly like the UI, so both always show the same response. It never touches raw API codes:
 /// only WeatherData.Category and the day/night flag.
-/// On an error it keeps the last good appearance (the UI shows the error).
+/// On an error it keeps the last good appearance (the UI shows the error and dims the card).
+/// When the data source changes (live / test) it returns to a neutral overcast day.
 /// </summary>
 public class EnvironmentController : MonoBehaviour
 {
@@ -14,8 +15,8 @@ public class EnvironmentController : MonoBehaviour
     [SerializeField] WeatherService service;
 
     [Header("Scene")]
-    [SerializeField] Light sunLight;          // the directional light: sun by day, moon by night
-    [SerializeField] Camera skyCamera;        // its background color is the sky (falls back to Camera.main)
+    [SerializeField] Light sunLight;          
+    [SerializeField] Camera skyCamera;        
     [SerializeField] Renderer ground;
 
     [Header("Effects")]
@@ -24,9 +25,9 @@ public class EnvironmentController : MonoBehaviour
     [SerializeField] ParticleWeatherEffect snow;
 
     [Header("Optional")]
-    [SerializeField] GameObject sunDisc;      // shown on clear days
-    [SerializeField] GameObject moonDisc;     // shown on clear nights
-    [SerializeField] GameObject[] nightOnly;  // e.g. a lit window: on at night, off by day
+    [SerializeField] GameObject sunDisc;     
+    [SerializeField] GameObject moonDisc;     
+    [SerializeField] GameObject[] nightOnly;  
 
     readonly List<IWeatherEffect> effects = new List<IWeatherEffect>();
 
@@ -60,11 +61,14 @@ public class EnvironmentController : MonoBehaviour
             return;
         }
         service.OnWeatherLoaded += HandleWeatherLoaded;
+        service.OnProviderChanged += HandleProviderChanged;
     }
 
     void OnDisable()
     {
-        if (service != null) service.OnWeatherLoaded -= HandleWeatherLoaded;
+        if (service == null) return;
+        service.OnWeatherLoaded -= HandleWeatherLoaded;
+        service.OnProviderChanged -= HandleProviderChanged;
     }
 
     // Neutral overcast day until the first response arrives.
@@ -77,9 +81,12 @@ public class EnvironmentController : MonoBehaviour
         ApplyState(data.Category, isDay, data.CloudCoverPercent);
     }
 
+    // Live and test data must never share a scene, so switching source resets it.
+    void HandleProviderChanged(bool isTestMode) => ApplyState(WeatherCategory.Fallback, true, null);
+
     /// <summary>
     /// Switches the whole scene to one state. Kept as one method so a smooth transition
-    /// (extra credit) can later replace the jump with a coroutine that lerps these values.
+    /// can later replace the jump with a coroutine that lerps these values.
     /// </summary>
     void ApplyState(WeatherCategory category, bool isDay, int? cloudCoverPercent)
     {

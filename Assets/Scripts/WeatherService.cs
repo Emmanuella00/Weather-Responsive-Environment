@@ -21,6 +21,10 @@ public class WeatherService : MonoBehaviour
     public bool IsTestMode => provider != null && provider.IsTestMode;
     public string ProviderName => provider != null ? provider.DisplayName : "None";
 
+    /// <summary>Coordinates of the most recent request (0, 0 before the first one).</summary>
+    public double LastLatitude { get; private set; }
+    public double LastLongitude { get; private set; }
+
     IWeatherProvider provider;
     int latestRequestId;   // only the newest request may touch loading state or raise events
 
@@ -59,6 +63,9 @@ public class WeatherService : MonoBehaviour
     public void RequestWeather(double latitude, double longitude)
     {
         if (provider == null) UseLiveProvider();
+
+        LastLatitude = latitude;
+        LastLongitude = longitude;
 
         int requestId = ++latestRequestId;
         SetLoading(true);
